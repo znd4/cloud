@@ -1,0 +1,4 @@
+config:
+  cloud:myEnvironment: dev
+environment:
+  - dev
