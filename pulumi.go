@@ -16,7 +16,8 @@ func addPulumi(ctx *pulumi.Context) error {
 			Organization: pulumi.String("znd4"),
 			SourceContext: pulumiservice.DeploymentSettingsSourceContextArgs{
 				Git: pulumiservice.DeploymentSettingsGitSourceArgs{
-					Branch: pulumi.StringPtr("/ref/heads/main"),
+					Branch:  pulumi.StringPtr("/ref/heads/main"),
+					RepoDir: pulumi.StringPtr("."),
 				},
 			},
 			Github: pulumiservice.DeploymentSettingsGithubPtr(&pulumiservice.DeploymentSettingsGithubArgs{
