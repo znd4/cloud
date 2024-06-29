@@ -1,11 +1,12 @@
 module cloud
 
-go 1.21
+go 1.21.0
 
-toolchain go1.21.1
+toolchain go1.22.4
 
 require (
-	github.com/pulumi/pulumi-digitalocean/sdk/v4 v4.22.0
+	github.com/pulumi/pulumi-dnsimple/sdk/v3 v3.4.3
+	github.com/pulumi/pulumi-pulumiservice/sdk v0.22.0
 	github.com/pulumi/pulumi/sdk/v3 v3.121.0
 )
 
@@ -61,14 +62,13 @@ require (
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.9.1 // indirect
-	github.com/pulumi/pulumi-dnsimple/sdk/v3 v3.4.3 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06 // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.0.0 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.2.2 // indirect
-	github.com/spf13/cobra v1.7.0 // indirect
+	github.com/spf13/cobra v1.8.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/tweekmonster/luser v0.0.0-20161003172636-3fa38070dbd7 // indirect
