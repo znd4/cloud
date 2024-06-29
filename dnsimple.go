@@ -70,7 +70,7 @@ func addProtonmailRecords(ctx *pulumi.Context, domainName string) error {
 		Name:     pulumi.String(""),
 		ZoneName: pulumi.String(domainName),
 		Type:     pulumi.String("TXT"),
-		Value:    pulumi.String("v=spf1 include:_spf.protonmail.ch ~all"),
+		Value:    pulumi.String("\"v=spf1 include:_spf.protonmail.ch ~all\""),
 	})
 	if err != nil {
 		return err
