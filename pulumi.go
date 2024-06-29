@@ -2,6 +2,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/pulumi/pulumi-pulumiservice/sdk/go/pulumiservice"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -11,9 +13,9 @@ func addPulumi(ctx *pulumi.Context) error {
 		ctx,
 		"znd4/cloud access",
 		&pulumiservice.DeploymentSettingsArgs{
-			Stack:        pulumi.String("dev"),
-			Project:      pulumi.String("cloud"),
-			Organization: pulumi.String("znd4"),
+			Stack:        pulumi.String(os.Getenv(pulumi.EnvStack)),
+			Project:      pulumi.String(os.Getenv(pulumi.EnvProject)),
+			Organization: pulumi.String(os.Getenv(pulumi.EnvOrganization)),
 			SourceContext: pulumiservice.DeploymentSettingsSourceContextArgs{
 				Git: pulumiservice.DeploymentSettingsGitSourceArgs{
 					Branch:  pulumi.StringPtr("/ref/heads/main"),
@@ -26,5 +28,8 @@ func addPulumi(ctx *pulumi.Context) error {
 				PreviewPullRequests: pulumi.BoolPtr(true),
 			}),
 		})
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }
