@@ -1,0 +1,11 @@
+ci:
+  skip:
+    - golangci-lint
+    - golangci-lint-config-verify
+
+repos:
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.59.1
+    hooks:
+      - id: golangci-lint
+      - id: golangci-lint-config-verify
