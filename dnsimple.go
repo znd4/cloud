@@ -82,7 +82,7 @@ func addProtonmailRecords(ctx *pulumi.Context, domainName string) error {
 			ZoneName: pulumi.String(domainName),
 			Type:     pulumi.String("CNAME"),
 			Value: pulumi.String(fmt.Sprintf(
-				"protonmail%s.domainkey.%s.domains.proton.ch.",
+				"protonmail%s.domainkey.%s.domains.proton.ch",
 				i,
 				inputs.dkim,
 			)),
