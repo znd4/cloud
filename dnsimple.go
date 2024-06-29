@@ -21,14 +21,14 @@ type ProtonmailRecordInputs struct {
 
 var protonmailInputMap = map[string]ProtonmailRecordInputs{
 	"znd4.dev": {
-		verificationString: "protonmail-verification=f425a51143cba67038b420d2012840c02db726c3",
+		verificationString: `"protonmail-verification=f425a51143cba67038b420d2012840c02db726c3"`,
 		dkim:               "dgwsf7fj6my2r3gc3nmtvkfmamr5klvflmeb4kdfe6ojl2asgwula",
-		dmarc:              "v=DMARC1; p=quarantine",
+		dmarc:              "\"v=DMARC1; p=quarantine\"",
 	},
 	"znd4.me": {
-		verificationString: "protonmail-verification=bf0b2c0048c78ef0584a1a8fc2cd3cf13828fd3a",
+		verificationString: `"protonmail-verification=bf0b2c0048c78ef0584a1a8fc2cd3cf13828fd3a"`,
 		dkim:               "dspg66b3xa4h6ddxwhskf5bbduujpap6l6f7dktkxrrs624p7k34a",
-		dmarc:              "v=DMARC1; p=quarantine",
+		dmarc:              `"v=DMARC1; p=quarantine"`,
 	},
 }
 
@@ -70,7 +70,7 @@ func addProtonmailRecords(ctx *pulumi.Context, domainName string) error {
 		Name:     pulumi.String(""),
 		ZoneName: pulumi.String(domainName),
 		Type:     pulumi.String("TXT"),
-		Value:    pulumi.String("\"v=spf1 include:_spf.protonmail.ch ~all\""),
+		Value:    pulumi.String(`"v=spf1 include:_spf.protonmail.ch ~all"`),
 	})
 	if err != nil {
 		return err
