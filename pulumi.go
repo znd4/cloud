@@ -26,6 +26,7 @@ func addPulumi(ctx *pulumi.Context) error {
 				Repository:          pulumi.String("znd4/cloud"),
 				DeployCommits:       pulumi.BoolPtr(true),
 				PreviewPullRequests: pulumi.BoolPtr(true),
+				Paths:               pulumi.ToStringArray([]string{"*"}),
 			}),
 		})
 	if err != nil {
