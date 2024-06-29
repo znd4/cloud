@@ -36,7 +36,7 @@ func addProtonmailRecords(ctx *pulumi.Context, domainName string) error {
 	var err error
 	inputs := protonmailInputMap[domainName]
 	_, err = dnsimple.NewZoneRecord(ctx, fmt.Sprintf("zane@%s TXT", domainName), &dnsimple.ZoneRecordArgs{
-		Name:     pulumi.String("@"),
+		// Name:     pulumi.String("@"),
 		ZoneName: pulumi.String(domainName),
 		Type:     pulumi.String("TXT"),
 		Value:    inputs.verificationString,
@@ -46,7 +46,7 @@ func addProtonmailRecords(ctx *pulumi.Context, domainName string) error {
 		return err
 	}
 	_, err = dnsimple.NewZoneRecord(ctx, fmt.Sprintf("zane@%s mail MX", domainName), &dnsimple.ZoneRecordArgs{
-		Name:     pulumi.String("@"),
+		// Name:     pulumi.String("@"),
 		ZoneName: pulumi.String(domainName),
 		Type:     pulumi.String("MX"),
 		Value:    pulumi.String("mail.protonmail.ch"),
@@ -57,7 +57,7 @@ func addProtonmailRecords(ctx *pulumi.Context, domainName string) error {
 		return err
 	}
 	_, err = dnsimple.NewZoneRecord(ctx, fmt.Sprintf("zane@%s mailsec MX", domainName), &dnsimple.ZoneRecordArgs{
-		Name:     pulumi.String("@"),
+		// Name:     pulumi.String("@"),
 		ZoneName: pulumi.String(domainName),
 		Type:     pulumi.String("MX"),
 		Value:    pulumi.String("mailsec.protonmail.ch"),
@@ -67,7 +67,7 @@ func addProtonmailRecords(ctx *pulumi.Context, domainName string) error {
 		return err
 	}
 	_, err = dnsimple.NewZoneRecord(ctx, fmt.Sprintf("zane@%s SPF", domainName), &dnsimple.ZoneRecordArgs{
-		Name:     pulumi.String("@"),
+		// Name:     pulumi.String("@"),
 		ZoneName: pulumi.String(domainName),
 		Type:     pulumi.String("TXT"),
 		Value:    pulumi.String("v=spf1 include:_spf.protonmail.ch ~all"),
