@@ -23,7 +23,7 @@ jobs:
               find . -name go.mod \
               | xargs dirname \
               | jq --raw-input \
-              | jq --slurp \
+              | jq --slurp --compact-output \
           )" >> $GITHUB_OUTPUT
         id: set-modules
   golangci:
