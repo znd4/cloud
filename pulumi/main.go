@@ -85,7 +85,7 @@ func main() {
 		err = newDeploymentSettings(
 			ctx,
 			"dnsimple",
-			withStack("dnsimple"),
+			withStack("dns"),
 			withGitSourceContext(newGitSourceArgs(withBranch("main"), withRepoDir("dnsimple"))),
 			withGithubConfig(newGithubConfig([]string{"dnsimple"})),
 		)

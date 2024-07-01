@@ -1,4 +1,4 @@
-name: dnsimple
+name: dns
 runtime: go
 description: A minimal Go Pulumi program
 config:
