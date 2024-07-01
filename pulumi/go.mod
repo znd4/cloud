@@ -1,4 +1,4 @@
-module cloud
+module pulumi
 
 go 1.21.0
 

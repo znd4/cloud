@@ -1,0 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/pulumi.json
+name: prod
+runtime: go
+description: |
+  Used to configure my pulumi stacks.

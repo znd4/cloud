@@ -1,9 +1,0 @@
-# yaml-language-server: $schema=https://json.schemastore.org/pulumi.json
-name: cloud
-runtime: go
-description: I'd like to manage dns records with dnsimple that should point to droplets in digital ocean
-config:
-  pulumi:tags:
-    value:
-      pulumi:template: https://www.pulumi.com/ai/api/project/9047ba65-9a86-4f07-8e48-3e2926b2c0c2.zip
-
