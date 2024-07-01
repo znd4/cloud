@@ -1,0 +1,67 @@
+#!/usr/bin/env nu --stdin
+
+const api_base = "https://api.dnsimple.com/v2"
+
+def build_headers [headers: list = []] {
+	[
+		Authorization $"Bearer ($env.DNSIMPLE_TOKEN)"
+		Accept application/json
+	]
+	| append $headers
+}
+def build_url [path: string, params: record] {
+	$api_base
+	| debug
+	| url parse
+	| upsert path {|record| path join $record.path $path}
+	| upsert params $params
+	| url join
+	# | url join
+	# | debug
+	# | url parse
+	# | url join
+}
+
+module dnsimple { 
+	export def get [
+		path: string, 
+		params: record = {}, 
+		headers: list = [],
+	] {
+		let url = (build_url $path $params)
+		let headers = (build_headers $headers)
+		http get --headers $headers $url
+	}
+}
+use dnsimple
+
+def main [] {
+	let account_id = (dnsimple get accounts
+	| $in.data.id.0)
+	let domains = (dnsimple get $"($account_id)/domains"
+	| $in.data
+	)
+	
+
+	let zones = (
+	dnsimple get $"($account_id)/zones"
+	| $in.data
+	)
+	let records = ($zones | each {|row|
+		dnsimple get (
+			($row.account_id | into string)
+			| path join 
+				zones 
+				($row.id | into string)
+				records
+			)
+	}
+	| $in.data
+	| reduce {|it, acc| $acc | append $it}
+	)
+	for domain in $domains { 
+		[[display bool]; [Yes true] [No false]]
+		| input list -d display $"Should we import ($domain.name)?"
+		pulumi import dnsimple:index/domain:Domain $domain.name $domain.id
+	}
+}
