@@ -15,5 +15,4 @@ repos:
             | xargs -I{} bash -c \
               "cd {} && golangci-lint run --config ../.golangci.yaml"
           '
-        
       - id: golangci-lint-config-verify
