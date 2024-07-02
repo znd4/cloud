@@ -9,6 +9,12 @@ def build_headers [headers: list = []] {
 	]
 	| append $headers
 }
+
+def confirm [prompt: string] {
+		[[display bool]; [No false] [Yes true]]
+		| input list --fuzzy -d display $prompt
+}
+
 def build_url [path: string, params: record] {
 	$api_base
 	| debug
@@ -35,6 +41,32 @@ module dnsimple {
 }
 use dnsimple
 
+def name_for_record [record: record] {
+	let name = $"record/($record.zone_id)/($record.type)/($record.name)"
+
+	confirm $"Should we import ($name)?"
+	| if not $in.bool { continue }
+	
+	let name = (
+		[
+			$"Content: ($record.content)"
+			$"Name: ($record.name)"
+		] | input list  --multi "Which of these fields should we add to the name?"
+		| prepend $name
+		| str join " "
+	)
+
+	confirm "Do you want to edit the name before importing?"
+	| if $in.bool {
+		let file = (mktemp -t)
+		$name | save --force $file
+		run-external $env.EDITOR $file
+		return (open $file --raw)
+	} 
+	return $name
+
+}
+
 def main [] {
 	let account_id = (dnsimple get accounts
 	| $in.data.id.0)
@@ -60,8 +92,18 @@ def main [] {
 	| reduce {|it, acc| $acc | append $it}
 	)
 	for domain in $domains { 
-		[[display bool]; [Yes true] [No false]]
-		| input list -d display $"Should we import ($domain.name)?"
+		[[display bool]; [No false] [Yes true]]
+		| input list --fuzzy -d display $"Should we import ($domain.name)?"
+		| if not $in.bool { continue }
 		pulumi import dnsimple:index/domain:Domain $domain.name $domain.id
+	}
+	for record in $records {
+		print -e $record
+		let name = (name_for_record $record)
+		try { 
+			pulumi import dnsimple:index/zoneRecord:ZoneRecord $name $"($record.zone_id)_($record.id)"
+		} catch {
+			print "failed to import"
+		}
 	}
 }
