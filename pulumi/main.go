@@ -44,6 +44,12 @@ func newGitSourceArgs(opts ...func(gsa *pulumiservice.DeploymentSettingsGitSourc
 	return result
 }
 
+func withProject(project string) func(args *pulumiservice.DeploymentSettingsArgs) {
+	return func(args *pulumiservice.DeploymentSettingsArgs) {
+		args.Project = pulumi.String(project)
+	}
+}
+
 func withGithubConfig(githubConfig pulumiservice.DeploymentSettingsGithubArgs) func(*pulumiservice.DeploymentSettingsArgs) {
 	return func(dsa *pulumiservice.DeploymentSettingsArgs) {
 		dsa.Github = githubConfig
@@ -85,6 +91,7 @@ func main() {
 		err = newDeploymentSettings(
 			ctx,
 			"dnsimple",
+			withProject("dns"),
 			withStack("dns"),
 			withGitSourceContext(newGitSourceArgs(withBranch("main"), withRepoDir("dnsimple"))),
 			withGithubConfig(newGithubConfig([]string{"dnsimple"})),
