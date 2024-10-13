@@ -1,0 +1,24 @@
+name: Pulumi preview
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  run_cron_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pulumi/auth-actions@v1
+        with:
+          organization: org-name
+          requested-token-type: urn:pulumi:token-type:access_token:personal
+
+      - uses: pulumi/actions@v5
+        with:
+          command: preview
+          stack-name: znd4/dns
