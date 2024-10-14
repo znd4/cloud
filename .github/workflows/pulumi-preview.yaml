@@ -23,4 +23,4 @@ jobs:
         with:
           command: preview
           stack-name: znd4/dns/dns
-          workdir: dnsimple
+          work-dir: dnsimple
