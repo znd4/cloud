@@ -9,6 +9,7 @@ permissions:
 jobs:
   preview:
     runs-on: ubuntu-latest
+    environment: production
     strategy:
       matrix:
         stack-name:
