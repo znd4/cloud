@@ -1,0 +1,32 @@
+name: Pulumi preview
+on:
+  push:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        stack:
+          - dir: dnsimple
+            name: znd4/dns/dns
+          - dir: pulumi
+            name: znd4/prod/pulumi
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pulumi/auth-actions@v1
+        with:
+          organization: znd4
+          requested-token-type: urn:pulumi:token-type:access_token:personal
+          scope: user:znd4
+      - uses: pulumi/actions@v5
+        with:
+          command: preview
+          stack-name: ${{ matrix.stack.name }}
+          work-dir: ${{ matrix.stack.dir }}
