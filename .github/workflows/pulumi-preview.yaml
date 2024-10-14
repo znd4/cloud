@@ -12,6 +12,11 @@ jobs:
     environment: production
     strategy:
       matrix:
+        stack:
+          - dir: dnsimple
+            name: znd4/dns/dns
+          - dir: pulumi
+            name: znd4/prod/pulumi
         stack-name:
           - znd4/dns/dns
           - znd4/prod/pulumi
@@ -28,5 +33,5 @@ jobs:
       - uses: pulumi/actions@v5
         with:
           command: preview
-          stack-name: ${{ matrix.stack-name }}
-          work-dir: dnsimple
+          stack-name: ${{ matrix.stack.name }}
+          work-dir: ${{ matrix.stack.dir }}
