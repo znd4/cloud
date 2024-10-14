@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  run_cron_job:
+  preview:
     runs-on: ubuntu-latest
 
     steps:
