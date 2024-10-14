@@ -22,4 +22,4 @@ jobs:
       - uses: pulumi/actions@v5
         with:
           command: preview
-          stack-name: znd4/dns
+          stack-name: znd4/cloud/dns
