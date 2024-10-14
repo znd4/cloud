@@ -15,7 +15,7 @@ jobs:
 
       - uses: pulumi/auth-actions@v1
         with:
-          organization: org-name
+          organization: znd4
           requested-token-type: urn:pulumi:token-type:access_token:personal
           scope: user:znd4
 
