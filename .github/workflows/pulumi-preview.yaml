@@ -17,9 +17,6 @@ jobs:
             name: znd4/dns/dns
           - dir: pulumi
             name: znd4/prod/pulumi
-        stack-name:
-          - znd4/dns/dns
-          - znd4/prod/pulumi
 
     steps:
       - uses: actions/checkout@v4
