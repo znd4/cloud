@@ -1,6 +1,6 @@
 name: Pulumi preview
 on:
-  workflow_dispatch:
+  pull_request:
 
 permissions:
   id-token: write
