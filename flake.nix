@@ -73,64 +73,93 @@
         #   pbpaste | nix run .#put-secret -- desec # reads standard input
         #
         # Environment override: SECRET_VAULT.
-        put-secret = pkgs.writeShellApplication {
-          name = "put-secret";
-          runtimeInputs = [
-            pkgs._1password-cli
-            pkgs.jq
-          ];
-          text = ''
-            title="''${1:-}"
-            case "$title" in
-              "" | -* | *:*)
-                echo "usage: put-secret <item title>   (no ':' in the title, so op:// references work)" >&2
-                exit 2
-                ;;
-            esac
-            vault="''${SECRET_VAULT:-Cloud CI}"
+        put-secret =
+          pkgs.writers.writePython3Bin "put-secret"
+            {
+              makeWrapperArgs = [
+                "--prefix"
+                "PATH"
+                ":"
+                (pkgs.lib.makeBinPath [ pkgs._1password-cli ])
+              ];
+              flakeIgnore = [ "E501" ];
+            }
+            ''
+              import json
+              import os
+              import shutil
+              import subprocess
+              import sys
 
-            from_clipboard=false
-            if [ -t 0 ]; then
-              if ! command -v pbpaste >/dev/null; then
-                echo "put-secret: pipe the secret into standard input." >&2
-                exit 2
-              fi
-              value="$(pbpaste)"
-              from_clipboard=true
-            else
-              value="$(cat)"
-            fi
-            # Drop a trailing newline or carriage return from the clipboard or a pipe.
-            value="''${value%$'\n'}"
-            value="''${value%$'\r'}"
-            if [ -z "$value" ]; then
-              echo "put-secret: the secret is empty." >&2
-              exit 1
-            fi
 
-            # printf is a shell builtin, so the value does not appear in a command line.
-            if op item get "$title" --vault "$vault" >/dev/null 2>&1; then
-              { op item get "$title" --vault "$vault" --reveal --format json
-                printf '%s' "$value" | jq -Rs .
-              } | jq -s '.[1] as $v | .[0] | (.fields[] | select(.id == "credential") | .value) = $v' \
-                | op item edit "$title" --vault "$vault" >/dev/null
-              action=Updated
-            else
-              printf '%s' "$value" \
-                | jq -Rs --arg title "$title" \
-                  '{title: $title, category: "API_CREDENTIAL", fields: [{id: "credential", type: "CONCEALED", value: .}]}' \
-                | op item create --vault "$vault" - >/dev/null
-              action=Created
-            fi
-            unset value
+              def op(*args, stdin=None):
+                  """Run op. Pass secrets only through stdin, never as arguments."""
+                  result = subprocess.run(
+                      ["op", *args], input=stdin, capture_output=True, text=True
+                  )
+                  if result.returncode != 0:
+                      sys.exit(f"op {args[0]} {args[1]} failed: {result.stderr.strip()}")
+                  return result.stdout
 
-            if [ "$from_clipboard" = true ]; then
-              pbcopy </dev/null
-            fi
-            op read "op://$vault/$title/credential" >/dev/null
-            echo "$action op://$vault/$title/credential" >&2
-          '';
-        };
+
+              def main():
+                  if len(sys.argv) != 2 or sys.argv[1].startswith("-") or ":" in sys.argv[1]:
+                      sys.exit("usage: put-secret <item title>   (no ':' in the title, so op:// references work)")
+                  title = sys.argv[1]
+                  vault = os.environ.get("SECRET_VAULT", "Cloud CI")
+
+                  from_clipboard = sys.stdin.isatty()
+                  if from_clipboard:
+                      if not shutil.which("pbpaste"):
+                          sys.exit("put-secret: pipe the secret into standard input.")
+                      value = subprocess.run(["pbpaste"], capture_output=True, text=True).stdout
+                  else:
+                      value = sys.stdin.read()
+                  value = value.rstrip("\r\n")
+                  if not value:
+                      sys.exit("put-secret: the secret is empty.")
+
+                  # Create the item only if op says that it does not exist. Any other
+                  # error (app locked, two items with this title) stops the script,
+                  # so a failure never makes a duplicate item.
+                  check = subprocess.run(
+                      ["op", "item", "get", title, "--vault", vault],
+                      capture_output=True,
+                      text=True,
+                  )
+                  if check.returncode == 0:
+                      exists = True
+                  elif "isn't an item" in check.stderr:
+                      exists = False
+                  else:
+                      sys.exit(f"put-secret: cannot check for the item: {check.stderr.strip()}")
+                  if exists:
+                      item = json.loads(
+                          op("item", "get", title, "--vault", vault, "--reveal", "--format", "json")
+                      )
+                      for field in item["fields"]:
+                          if field["id"] == "credential":
+                              field["value"] = value
+                      op("item", "edit", title, "--vault", vault, stdin=json.dumps(item))
+                      action = "Updated"
+                  else:
+                      item = {
+                          "title": title,
+                          "category": "API_CREDENTIAL",
+                          "fields": [{"id": "credential", "type": "CONCEALED", "value": value}],
+                      }
+                      op("item", "create", "--vault", vault, "-", stdin=json.dumps(item))
+                      action = "Created"
+
+                  if from_clipboard:
+                      subprocess.run(["pbcopy"], input="", text=True)
+                  ref = f"op://{vault}/{title}/credential"
+                  op("read", ref)
+                  print(f"{action} {ref}", file=sys.stderr)
+
+
+              main()
+            '';
       });
 
       devShells = forAllSystems (pkgs: {
