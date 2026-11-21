@@ -37,11 +37,12 @@
         # Environment overrides: CI_TOKEN_VAULT, CI_TOKEN_REPO, CI_TOKEN_ENV.
         set-ci-token = pkgs.writeShellApplication {
           name = "set-ci-token";
-          runtimeInputs = [
-            pkgs._1password-cli
-            pkgs.gh
-          ];
+          runtimeInputs = [ pkgs._1password-cli ];
           text = ''
+            # Prefer the caller's gh: it may get its login from a wrapper, such as
+            # `op plugin run -- gh`. Use the nixpkgs gh only if none is on PATH.
+            export PATH="$PATH:${pkgs.gh}/bin"
+
             case "''${1:-}" in
               -*)
                 echo "usage: set-ci-token [item name or ID]" >&2
