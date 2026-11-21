@@ -61,7 +61,6 @@
             op item get "$item" --vault "$vault" --fields credential --reveal \
               | tr -d '\n' \
               | gh secret set OP_SERVICE_ACCOUNT_TOKEN --repo "$repo" --env "$env"
-            gh secret list --repo "$repo" --env "$env"
           '';
         };
       });
