@@ -167,6 +167,10 @@
           packages = [
             pkgs._1password-cli
             pkgs.gh
+            # infra/: Terragrunt stack. OpenTofu 1.13 or later for
+            # `tofu providers lock -oci-mirror`.
+            pkgs.opentofu
+            pkgs.terragrunt
           ];
         };
       });
