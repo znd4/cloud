@@ -17,6 +17,6 @@ func main() {
 				return err
 			}
 		}
-		return nil
+		return addHomelabAcmeRecords(ctx)
 	})
 }
