@@ -1,0 +1,36 @@
+# This file is maintained automatically by "tofu init".
+# Manual edits may be lost in future updates.
+
+provider "registry.opentofu.org/dnsimple/dnsimple" {
+  version     = "2.2.1"
+  constraints = "~> 2.2"
+  hashes = [
+    "h1:1SqlbGTnm90uVk4He2+b2ZBIO+/qb8jdFiP7JEEzpnU=",
+    "h1:2ViwaETTTryOatHYPgRg2xYmoroK1CPuWUru9+edzZU=",
+    "h1:GsxxOKra8mxrJ2qJvo7laMH8pbOmkCwyCzPtL33Ot7A=",
+    "h1:I7x3QKgtfOnG2L3aeK+DxrP1ebQEFW3fHWq/LFrbTQg=",
+    "h1:L5CKMGmBmeZZxGOE0tk1ACduGiv5HJWdtVCiHlkxP+M=",
+    "h1:TmgILzqS4KZprTDjvohAFWksNsD6vE8gxgS8678r3Ho=",
+    "h1:V7Dt5do+aO4qbA8ytlcQpF15qW3G+e8PMDf5bx+K8mw=",
+    "h1:ZQmz4LSULYW/2UBnAJOXFWBVj+TIAEYx6bh9wDXg7WI=",
+    "h1:fzuvvAD+zZgQXMaGEZ7jLDqY9t5cjracVpjcVvyGK4k=",
+    "h1:h9LETw0Gv08xvvgsGGiFtrZUO0BhSI7m239OGdFeUJg=",
+    "h1:m+YJIt5OC7GI+lSZyETo/EmmPwQP95cQ5YvgvMUETE4=",
+    "h1:qcS2dZjv+z0N4X43z4lou+wGHvpN5q/KZUkSdHgslUg=",
+    "h1:vYsM4foQu0u2dcg86yjVf/KXVh0O8OvKzA4YYfvI5yU=",
+    "zh:1ce3f95897519059d5dc104d7c8a2c68462330c4b58879d52d6794a41ffc30f8",
+    "zh:24839076472007bafb89023879a433d887a1909ce925c61c46ae37987170866d",
+    "zh:2c53c106dfb7beece84d28c41285922e4a3bba44765dba68449927dac9553d3f",
+    "zh:3cb3f4df7896579663a90e6d15e038d0b5547af56fe6f47aed904b0936b2bcb9",
+    "zh:4a6c658bf7fefca799ee4f7900dc8178a91d87e3a418697a6279cd71c8298f4c",
+    "zh:4bdeae52dff8c0bc67ee6b2b6efb5479c4ca1319c7b91e5ef54e33d2f705e78d",
+    "zh:569f23e6e06ee2e60c1bda6179ff9bc43a49f44d9d666d063dc48d094510d2ea",
+    "zh:943c3d389d4f6231ca6e429941ea023f5246d8b6a149a957d6e12a53136cd811",
+    "zh:a6c15afefe1814502ff055ef5e7eb754b96a37e91472be97f5b7036df194874e",
+    "zh:cd071c6ff08fb87d7158d70156352bb725241d940078d39420e629e0b2af3461",
+    "zh:dac585167413db996e07cca86a801988709e07ce94c02877513a8031db6bfb49",
+    "zh:e5748614672b7ed1594cab9daa8a3077662d8f4ab813046d745c99269f997e3c",
+    "zh:f7639b0a7657b80238e2a7464230a7666b9df8223e3ca6d5075171babe5c5214",
+    "zh:f809ab383cca0a5f83072981c64208cbd7fa67e986a86ee02dd2c82333221e32",
+  ]
+}

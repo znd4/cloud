@@ -1,0 +1,17 @@
+# OpenTofu CLI configuration. infra/root.hcl sets TF_CLI_CONFIG_FILE to this
+# file for every tofu command that Terragrunt runs.
+#
+# The znd4/* providers are not in a registry. They are OCI artifacts on
+# ghcr.io, for example ghcr.io/znd4/opentofu-provider-desec.
+# Needs OpenTofu 1.10 or later.
+# https://opentofu.org/docs/cli/oci_registries/provider-mirror/
+
+provider_installation {
+  oci_mirror {
+    repository_template = "ghcr.io/znd4/opentofu-provider-${type}"
+    include             = ["registry.opentofu.org/znd4/*"]
+  }
+  direct {
+    exclude = ["registry.opentofu.org/znd4/*"]
+  }
+}
