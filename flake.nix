@@ -171,6 +171,8 @@
             # `tofu providers lock -oci-mirror`.
             pkgs.opentofu
             pkgs.terragrunt
+            # Cloudflare CLI (beta): R2 buckets and API tokens for the state backend.
+            pkgs.cf
           ];
         };
       });
