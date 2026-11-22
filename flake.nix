@@ -164,15 +164,15 @@
 
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
-          packages = [
-            pkgs._1password-cli
-            pkgs.gh
+          packages = with pkgs; [
+            _1password-cli
+            gh
             # infra/: Terragrunt stack. OpenTofu 1.13 or later for
             # `tofu providers lock -oci-mirror`.
-            pkgs.opentofu
-            pkgs.terragrunt
+            opentofu
+            terragrunt
             # Cloudflare CLI (beta): R2 buckets and API tokens for the state backend.
-            pkgs.cf
+            cf
           ];
         };
       });
